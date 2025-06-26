@@ -118,7 +118,7 @@ sudo mariadb
 Y dentro de MariaDB:
 ```bash
   CHANGE MASTER TO
-  MASTER_HOST='192.168.100.40',
+  MASTER_HOST='192.168.235.98',
   MASTER_USER='replicador',
   MASTER_PASSWORD='TuPasswordFuerte',
   MASTER_LOG_FILE='mariadb-bin.000001',
@@ -244,6 +244,35 @@ sudo mkfs.ext4 /dev/md0
 sudo mkdir /mnt/raid1
 sudo mount /dev/md0 /mnt/raid1
    ```
+* **Verificamos e punto de montaje:**
+ ```bash
+df -h
+   ```
+* **Movemos la carpeta de datos actual de MariaDB a la nueva ubicación:**
+ ```bash
+sudo rsync -av /var/lib/mysql /mnt/raid1/
+   ```
+* **Cambiamos el archivo de configuración para que MariaDB use el nuevo directorio:**
+ ```bash
+sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
+
+datadir = /var/lib/mysql #cambiar a:
+datadir = /mnt/raid1/mysql
+   ```
+* **Cambiamos el propietario de los datos en la nueva ubicación:**
+ ```bash
+sudo chown -R mysql:mysql /mnt/raid1/mysql
+   ```
+* **Reiniciar MariaDB y verificar que funcione:**
+ ```bash
+sudo systemctl restart mariadb
+sudo systemctl status mariadb
+```
+* **Verificar que MariaDB esté usando el nuevo directorio de datos:**
+ ```bash
+sudo lsof -n | grep /mnt/raid1/mysql
+   ```
+
 * **Guardamos la configuración para mantenerla persistente:**
  ```bash
 sudo mdadm --detail --scan | sudo tee -a /etc/mdadm/mdadm.conf
@@ -251,20 +280,11 @@ sudo update-initramfs -u
 echo '/dev/md0 /mnt/raid1 ext4 defaults,nofail,discard 0 0'
    ```
 
-* **Creamos el punto de montaje y montamoa el RAID1 sin reiniciar:**
+
+-------* **Creamos el punto de montaje y montamoa el RAID1 sin reiniciar:**
  ```bash
 sudo mkdir -p /mnt/raid1
 sudo mount -a
-   ```
-
-* **Detenemos servicio de MariaDB:**
- ```bash
-sudo systemctl stop mariadb
-   ```
-
-* **Movemos la carpeta de datos actual de MariaDB a la nueva ubicación:**
- ```bash
-sudo rsync -av /var/lib/mysql /mnt/raid1/
    ```
 
 * **Cambiamos el propietario de los datos en la nueva ubicación:**
@@ -282,12 +302,8 @@ datadir = /mnt/raid1/mysql
 
 * **Reiniciar MariaDB y verificar que funcione:**
  ```bash
-sudo systemctl start mariadb
+sudo systemctl restart mariadb
 sudo systemctl status mariadb
-   ```
-* **Verificar que MariaDB esté usando el nuevo directorio de datos:**
- ```bash
-sudo lsof -n | grep /mnt/raid1/mysql
    ```
 
 * **Verificamos que MariaDB esté funcionando correctamente y no haya perdido la base de datos:**

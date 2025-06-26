@@ -1,7 +1,9 @@
 # **Configuración del Proxy (Balanceador)**
 <div align="justify">
   
-El balanceador en tu proyecto tiene como objetivo repartir las solicitudes de los usuarios entre las dos aplicaciones que tienes desplegadas en diferentes servidores, mejorando así la disponibilidad, escalabilidad y rendimiento del sistema. Actúa como un punto de entrada único, de modo que los usuarios no necesitan conocer las direcciones específicas de cada backend, y además ayuda a que si una instancia falla, la otra pueda seguir atendiendo las peticiones, asegurando así la continuidad del servicio.  
+El proxy o balanceador reparte las solicitudes de los usuarios entre las dos aplicaciones (App1 y App2) que están en diferentes servidores y diferentes máquinas.  Esto permite que el sistema funcione de manera más estable y eficiente, ya que mejora la disponibilidad del servicio y reparte la carga entre ambos servidores. Actúa como un punto de acceso único para usuarios, de modo que los usuarios no necesitan conocer las direcciones IP individuales de cada aplicación.  En caso de que una instancia deje de funcionar, la otra puede continuar atendiendo las solicitudes, lo que garantiza la continuidad del servicio frente a fallos. 
+
+---
 
 **Pasos realizados:**
 

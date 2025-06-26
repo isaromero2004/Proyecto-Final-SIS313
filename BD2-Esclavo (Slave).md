@@ -216,4 +216,84 @@ CREATE USER 'appuser'@'%' IDENTIFIED BY 'App1@';
 GRANT ALL PRIVILEGES ON supermercado.* TO 'appuser'@'%';
 FLUSH PRIVILEGES;
   ```
+
+# **Implementamos RAID1 para la BD Esclava:**
+Añadimos 2 discos de 1GB cada uno
+* **Verificamos estado de discos:**
+```bash
+sudo fdisk -l
+   ```
+
+* **Creamos el RAID:**
+ ```bash
+sudo mdadm --create --verbose /dev/md0 --level=1 --raid-devices=2 /dev/sdb /dev/sdc
+   ```
+
+* **Verificaos estado del raid:**
+ ```bash
+sudo mdadm --detail /dev/md0
+   ```
+
+* **Creamos sistema de archivos:**
+ ```bash
+sudo mkfs.ext4 /dev/md0
+   ```
+
+* **Montamos el RAID en una carpeta:**
+ ```bash
+sudo mkdir /mnt/raid1
+sudo mount /dev/md0 /mnt/raid1
+   ```
+* **Guardamos la configuración para mantenerla persistente:**
+ ```bash
+sudo mdadm --detail --scan | sudo tee -a /etc/mdadm/mdadm.conf
+sudo update-initramfs -u
+echo '/dev/md0 /mnt/raid1 ext4 defaults,nofail,discard 0 0'
+   ```
+
+* **Creamos el punto de montaje y montamoa el RAID1 sin reiniciar:**
+ ```bash
+sudo mkdir -p /mnt/raid1
+sudo mount -a
+   ```
+
+* **Detenemos servicio de MariaDB:**
+ ```bash
+sudo systemctl stop mariadb
+   ```
+
+* **Movemos la carpeta de datos actual de MariaDB a la nueva ubicación:**
+ ```bash
+sudo rsync -av /var/lib/mysql /mnt/raid1/
+   ```
+
+* **Cambiamos el propietario de los datos en la nueva ubicación:**
+ ```bash
+sudo chown -R mysql:mysql /mnt/raid1/mysql
+   ```
+
+* **Cambiamos el archivo de configuración para que MariaDB use el nuevo directorio:**
+ ```bash
+sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
+
+datadir = /var/lib/mysql #cambiar a:
+datadir = /mnt/raid1/mysql
+   ```
+
+* **Reiniciar MariaDB y verificar que funcione:**
+ ```bash
+sudo systemctl start mariadb
+sudo systemctl status mariadb
+   ```
+* **Verificar que MariaDB esté usando el nuevo directorio de datos:**
+ ```bash
+sudo lsof -n | grep /mnt/raid1/mysql
+   ```
+
+* **Verificamos que MariaDB esté funcionando correctamente y no haya perdido la base de datos:**
+ ```bash
+sudo mariadb
+
+show databases;
+   ```
 </div>

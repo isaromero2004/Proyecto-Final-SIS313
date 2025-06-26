@@ -5,7 +5,7 @@ App1 es una de las dos instancias backend que forman parte de la infraestructura
 
 ---
 
-## 1. Configuración de Red
+## Configuración de Red
 
 ### Configuración de la IP estática configurada con Netplan:
 
@@ -203,6 +203,11 @@ app.listen(port, () => {
 })
 
 ```
+Habilitamos el tráfico por el puerto por el que corre nuestra app con el comando:
+```bash
+sudo ufw allow 3001/tcp
+```
+
 Corremos la API, con el comando:
 ```bash
 node index.js

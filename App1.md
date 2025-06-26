@@ -118,11 +118,11 @@ npm -v #imprime "10.9.2"
 * **Creación de la carpeta que contendrá la aplicación:**
 
 ```bash
-mkdir app2
+mkdir app1
 ```
 ingresamos a la carpeta recién creada:
 ```bash
-cd app2
+cd app1
 ```
 * **Creación de la subcarpeta que contendrá el código de la API:**
 ```bash
@@ -219,19 +219,19 @@ Verificamos su funcionamiento (sin el blanceador) ingresando en el navegador la 
 192.168.235.101:3001
 ```
 
-# **Después de la implementación del Proxy (Balanceador)**
+## **Después de la implementación del Proxy (Balanceador)**
 Se verifica el funcionamiento en el navegador, ingresando a:
 ```bash
 sis313.usfx.bo #dns del proxy declarada en el host de la máquina cliente 
 ```
 # **Después de la creación de la BD**
-# **Cliente de mariadb:**
+## **Cliente de mariadb:**
 * **Añadimos extensiones de cliente para mariadb:**
 ```bash
 npm install mysql2
 ```
 
-# **Archivo CRUD para la app:**
+## **Archivo CRUD para la app:**
 ```bash
 const express = require('express');
 const mysql = require('mysql2');

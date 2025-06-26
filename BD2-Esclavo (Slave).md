@@ -1,4 +1,4 @@
-# **Base de datos 2**
+# **Base de datos 2 - Esclava (Slave)**
 <div align="justify">
 
 **Objetivo dentro del proyecto:** 

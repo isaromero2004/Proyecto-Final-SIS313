@@ -136,7 +136,7 @@ FLUSH PRIVILEGES;
  ```bash
 SHOW MASTER STATUS;
   ```
-Debería devolver algo como:
+Que devuelve la siguiente tabla:
  ```bash
 +--------------------+----------+--------------+------------------+
 | File               | Position | Binlog_Do_DB | Binlog_Ignore_DB |

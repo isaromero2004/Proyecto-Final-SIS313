@@ -152,6 +152,6 @@ sudo mysqldump --databases tienda --master-data > tienda.sql
 
 * **Copiar el dump a la esclava:**
  ```bash
-scp -P 77 supermercado.sql ubu2@192.168.235.102:/home/bdesclavo/
+scp -P 77 supermercado.sql bdesclavo@192.168.235.102:/home/bdesclavo/
   ```
 </div>

@@ -1,7 +1,5 @@
 # **Base de datos 2 - Esclava (Slave)**
-<div align="justify">
-
-**Objetivo dentro del proyecto:** 
+<div align="justify"> 
 
 La BD 2 como esclava, está configurada para conectarse al maestro y replicar en tiempo real todos los cambios realizados sobre la base de datos tienda. Funciona solo en modo lectura, asegurando la disponibilidad de datos sin afectar la carga del maestro. Configurada con su propio server-id, se importó el respaldo inicial desde el maestro conectándose mediante el usuario replicador. Una vez iniciada, la esclava mantiene la sincronización automáticamente, actuando como respaldo o punto de lectura para balanceo de carga.
 
@@ -208,4 +206,14 @@ Ejecutar los comandos:
 USE supermercado;
 SELECT * FROM productos;
    ```
+## **En caso de un fallo en la BD 1**
+Debemos crear un usuario para poder acceder a los datos de la BD2, con los siguientes comandos:
+```bash
+sudo mariadb
+   ```
+ ```bash
+CREATE USER 'appuser'@'%' IDENTIFIED BY 'App1@';
+GRANT ALL PRIVILEGES ON supermercado.* TO 'appuser'@'%';
+FLUSH PRIVILEGES;
+  ```
 </div>

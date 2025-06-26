@@ -48,14 +48,14 @@ Dentro añadir las configuraciones:
 bind-address = 0.0.0.0
 server-id = 2
 relay-log = /var/log/mysql/mariadb-relay-bin
-   ```
+```
 Asegúrurase de que el archivo de log exista o que MariaDB lo pueda crear, en caso de que no, utilizar los siguientes comandos:
 * Creamos el directorio
 ```bash
 sudo mkdir -p /var/log/mysql
  ```
 * Asignamos la propiedad del directorio al usuario y grupo: `mysql`
-* ```bash
+```bash
 sudo chown -R mysql:mysql /var/log/mysql
  ```
 * Damos permisos al directorio:

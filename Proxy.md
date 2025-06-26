@@ -136,54 +136,54 @@ server {
         text/xml
         application/xml
         application/xml+rss
-        text/javascript
-        text/plain
-        text/css
-        application/json
-        application/javascript
-        application/xml
-        text/javascript
-        text/xml;
-
+        text/javascript;
 
    }
 }
 
 ```
-* **Enlace simbólico**
+Se incluyeron las IP's de las aplicaciones con las que se realizará el balanceo, el puerto al que escuchará que es el de HTTP, cabeceras de seguridad, entre otras configuraciones
+
+* **Establecemos un enlace simbólico**
 ```bash
- sudo ln -s /etc/nginx/sites-available/balanceo_SIS313 /etc/nginx/sites-enabled/
+ sudo ln -s /etc/nginx/sites-available/proxy.usfx.bo /etc/nginx/sites-enabled/
    ```
-* **Revisión de sintaxis del archivo Nginx**
+* **Revisamos de sintaxis del archivo Nginx**
 ```bash
 sudo nginx -t
    ```
-* **Eliminar el enlace default**
+Tras colocar el comando anterior, debe devolverse:
+```bash
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+```
+* **Eliminamos el enlace default**
 ```bash
  sudo rm /etc/nginx/sites-enabled/default
    ```
-* **Si el enlace fue exitoso se ve el nombre del archivo de Nginx creado**
+* **Verificamos la creación exitosa del enlace**
 ```bash
 ls /etc/nginx/sites-enabled/
    ```
-
-* **Reinicio del servicio con los cambios**
+Devuelve el nombre del archivo creado: `proxy.usfx.bo`
+* **Reiniciamos el servicio aplicando los cambios**
 ```bash
 sudo systemctl restart nginx
    ```
-# **Añadir a hosts ip y dns del balanceador**
-```bash
-192.168.100.10 sis313.final
-   ```
 
+# **En el Host de la máquina Cliente**
+## **Añadimos la dirección IP del Balanceador y su nombre de dominio**
+```bash
+192.168.235.100		sis313.usfx.bo
+   ```
 ## **Prueba de conectividad con las apps**
 ```bash
 curl http://192.168.100.20:3001/
 curl http://192.168.100.30:3002/
    ```
-## **Hosts - Dns**
-Verificar que la ip de la máquina virtual del balanceador y su dns se encuentre añadido en la carpeta de hosts en la máquina cliente:
-```bash
-192.168.100.10 sis313.final
-   ```
+Se devuelve el código de las apps
+# **Comprobación final**
+En el navegador buscamos: `sis313.usfx.bo`
+Aparece la app1 y al refrescar la página aparece la app2
+
 </div>
